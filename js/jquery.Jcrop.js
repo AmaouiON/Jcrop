@@ -133,7 +133,25 @@
       KeyManager.watchKeys();
 
       return function (pos) {
-        Coords.moveOffset([pos[0] - lloc[0], pos[1] - lloc[1]]);
+        //========= begin replace origin line 136 for rotate
+        var x = pos[0] - lloc[0];
+        var y = pos[1] - lloc[1];
+        var rotate = options.rotate || 0;
+        var angle = (rotate / 90) % 4;
+        if (angle == 1) {
+          var temp = x;
+          x = y;
+          y = - temp;
+        } else if (angle == 2) {
+          x = -x;
+          y = -y;
+        } else if (angle == 3) {
+          var temp = x;
+          x = -y;
+          y = temp;
+        }
+        Coords.moveOffset([x, y]);
+        //========= end replace origin line 136 for rotate
         lloc = pos;
 
         Selection.update();
